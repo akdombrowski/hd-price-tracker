@@ -1,0 +1,79 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "autoAttachChildProcesses": true,
+      "cwd": "${workspaceFolder}",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+      "name": "yarn start:dev",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.(m|c|)js",
+      ],
+      "outputCapture": "std",
+      "preLaunchTask": "yarn build",
+      "request": "launch",
+      "runtimeArgs": [
+        "tsx",
+        "${workspaceFolder}/src/main.ts"
+      ],
+      "runtimeExecutable": "yarn",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/**.*",
+        "!${workspaceFolder}/**/src/**.*",
+        // "!${workspaceFolder}/dist/**.*",
+      ],
+      "trace": true,
+      "type": "node"
+    },
+    {
+      "autoAttachChildProcesses": true,
+      "cwd": "${workspaceFolder}",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+      "name": "yarn run crawl",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.(m|c|)js",
+      ],
+      "outputCapture": "std",
+      "preLaunchTask": "yarn build",
+      "request": "launch",
+      "runtimeArgs": [
+        "crawl"
+      ],
+      "runtimeExecutable": "yarn",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/**.*",
+        "!${workspaceFolder}/**/src/**.*",
+        // "!${workspaceFolder}/dist/**.*",
+      ],
+      "trace": true,
+      "type": "node"
+    },
+    {
+      "autoAttachChildProcesses": true,
+      "cwd": "${workspaceFolder}",
+      "command": "yarn crawl",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+      "name": "yarn crawl",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.(m|c|)js",
+      ],
+      "outputCapture": "std",
+      "preLaunchTask": "yarn build",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/.yarn",
+        "${workspaceFolder}/.vscode",
+        "${workspaceFolder}/.actor",
+        "${workspaceFolder}/.storage",
+      ],
+      "trace": true,
+      "type": "node-terminal"
+    },
+  ]
+}

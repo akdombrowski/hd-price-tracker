@@ -1,0 +1,43 @@
+{
+  "name": "hd-price-tracker",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "HD Price Tracker",
+  "engines": {
+    "node": ">=20.14.0"
+  },
+  "dependencies": {
+    "@crawlee/utils": "^3.10.5",
+    "apify": "^3.2.3",
+    "cheerio": "^1.0.0-rc.12",
+    "crawlee": "^3.10.5",
+    "dotenv": "^16.4.5",
+    "puppeteer": "^22.11.1"
+  },
+  "devDependencies": {
+    "@apify/eslint-config-ts": "^0.4.1",
+    "@apify/tsconfig": "^0.1.0",
+    "@types/node": "^20.14.5",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
+    "apify-cli": "^0.19.5",
+    "eslint": "^9.5.0",
+    "prettier": "^3.3.2",
+    "prettier-eslint": "^16.3.0",
+    "tsx": "^4.15.6",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "crawl": "apify run --purge",
+    "start": "npm run start:dev",
+    "start:prod": "node dist/src/main.js",
+    "start:dev": "tsx --env-file='.env.development.local' src/main.ts",
+    "build": "tsc",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix",
+    "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
+  },
+  "author": "Anthony Dombrowski",
+  "license": "MIT",
+  "packageManager": "yarn@4.3.0"
+}
