@@ -1,11 +1,14 @@
 import { Actor } from "apify";
-import { PuppeteerCrawler } from "crawlee";
+import { PuppeteerCrawler, KeyValueStore, Dictionary } from "crawlee";
 
 (async () => {
   await Actor.main(async () => {
     const startUrls = [
-      "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates/conventional-fixed-rate-mortgages.html",
+      "https://www.homedepot.com/p/Husky-56-in-W-x-22-in-D-Heavy-Duty-23-Drawer-Combination-Rolling-Tool-Chest-and-Top-Tool-Cabinet-Set-in-Matte-Black-HOTC5623BB2S/303412321",
     ];
+    const input = (await KeyValueStore.getInput()) as Dictionary;
+
+    const { url } = input;
 
     // Create a PuppeteerCrawler that will use the proxy configuration and and handle requests with the router from routes.js file.
     const crawler = new PuppeteerCrawler({
@@ -55,20 +58,23 @@ import { PuppeteerCrawler } from "crawlee";
           // else { session.markGood() }
         }
 
-        const tableSelector = "table tbody";
-        await page.waitForSelector(tableSelector);
-        const interestRatesTable = await page.$(tableSelector);
-        if (interestRatesTable) {
-          const tableData = await interestRatesTable.$$eval(
-            "tr",
+        const priceContainer = "#standard-price > div > div";
+
+        await page.waitForSelector(priceContainer);
+
+        const priceComponent = await page.$(priceContainer);
+
+        if (priceComponent) {
+          const tableData = await priceComponent.$$eval(
+            "span",
             async (els) => {
               const data: { [key: string]: any } = {};
               for (const tr of els) {
                 const children = tr.children;
                 const rowData: string[] = [];
-                const loanType = children.item(0)?.textContent;
-                if (loanType) {
-                  data[loanType] = rowData;
+                const price = children.item(0)?.textContent;
+                if (price) {
+                  data[price] = rowData;
 
                   for (const c of children) {
                     const content = c.textContent;
@@ -87,12 +93,12 @@ import { PuppeteerCrawler } from "crawlee";
 
           await pushData(tableData);
         } else {
-          log.error("selector not found", { selector: tableSelector });
+          log.error("selector not found", { selector: priceContainer });
         }
       },
     });
 
     // Run the crawler with the start URLs and wait for it to finish.
-    await crawler.run(startUrls);
+    await crawler.run(url);
   });
 })();
