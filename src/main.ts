@@ -6,6 +6,20 @@ import replPlugin from "puppeteer-extra-plugin-repl";
 import addblockerPlugin from "puppeteer-extra-plugin-adblocker";
 import { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } from "puppeteer";
 
+export interface IScreenshot {
+  encoding: string;
+  type: string;
+  img: string;
+}
+export interface IHDPrice {
+  url?: string | { [key: string]: string };
+  name?: string;
+  price: number | string;
+  screenshot?: IScreenshot;
+}
+
+const NAME_SCRAPE_ERROR = "NAME_SCRAPE_ERROR";
+
 (async () => {
   await Actor.main(async () => {
     // const startUrls = [
@@ -32,6 +46,7 @@ import { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } from "puppeteer";
         launcher: puppeteerExtra,
         launchOptions: {
           headless: true,
+          defaultViewport: { width: 1280, height: 720 },
         },
       },
       maxRequestRetries: Number(process.env.MAX_REQUEST_RETRIES) ?? 0,
@@ -58,12 +73,14 @@ import { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } from "puppeteer";
 
       async requestHandler(ctx) {
         const { request, page, log, session, pushData } = ctx;
-        page.setDefaultTimeout(60000);
+        page.setDefaultTimeout(
+          Number(process.env.PAGE_DEFAULT_TIMEOUT_MILLIS) ?? 60000,
+        );
 
         const title = await page.title();
         const url = request.loadedUrl;
 
-        log.info("crawling", { title, url });
+        log.info(`crawling ${url}`, { title, url });
         if (session) {
           if (title === "Blocked") {
             session.retire();
@@ -78,34 +95,30 @@ import { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } from "puppeteer";
 
         const priceContainer = "#standard-price > div > div";
 
-        await page.waitForSelector(priceContainer, { timeout: 60000 });
-
-        // Start an interactive REPL here with the `page` instance.
-        // await page.repl();
-        // // Afterwards start REPL with the `browser` instance.
-        // const browser = page.browser();
-        // await browser.repl();
-
-        const priceComponent = await page.$(priceContainer);
-
+        // This is the div that houses the multiple 'span' components that make
+        // up the price
+        const priceComponent = await page.waitForSelector(priceContainer);
         if (priceComponent) {
-          const hdPrice: { [key: string]: string } =
-            await priceComponent.$$eval(
-              "span",
-              async (els) => {
-                const data: string[] = [];
-                for (const span of els) {
-                  const price = span.textContent;
-                  if (price) {
-                    data.push(price);
-                  }
+          const hdPrice: IHDPrice = await priceComponent.$$eval(
+            "span",
+            async (els) => {
+              const data: string[] = [];
+              for (const span of els) {
+                const price = span.textContent;
+                if (price) {
+                  data.push(price);
                 }
-                return { price: data.join("") };
-              },
-              log,
-            );
+              }
+              // Join together the multiple span components to form the price as
+              // a single string
+              return { price: data.join("") };
+            },
+          );
 
           if (hdPrice) {
+            log.info("scraped price", { price: hdPrice.price });
+
+            // Scrape product name
             let productName;
             try {
               const titleDiv = await page.waitForSelector(
@@ -126,25 +139,34 @@ import { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } from "puppeteer";
               });
             }
 
-            hdPrice.name = productName ?? "NAME_SCRAPE_ERROR";
+            hdPrice.name = productName ?? NAME_SCRAPE_ERROR;
             hdPrice.url = startUrls[0].url;
 
             log.info("scraped data", hdPrice);
           } else {
             log.error("data not found", priceComponent);
           }
+
+          // Take a screenshot for reference
+          const screenshotEncoding = "base64";
+          const type = "png";
+
           const screenshot = await page.screenshot({
-            encoding: "base64",
-            type: "png",
+            encoding: screenshotEncoding,
+            type,
             optimizeForSpeed: true,
+            path: "../notes/screen.txt",
           });
 
-          hdPrice.screenshot = screenshot;
+          hdPrice.screenshot = {
+            encoding: screenshotEncoding,
+            type,
+            img: screenshot,
+          };
 
           await pushData(hdPrice);
         } else {
-          log.error("selector not found", { selector: priceContainer });
-          log.error("selector not found", { component: priceComponent });
+          log.error("selector not found", { selector: priceContainer, url });
         }
       },
     });

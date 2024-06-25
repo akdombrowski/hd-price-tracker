@@ -1,29 +1,39 @@
 {
-  "requestsFinished": 1,
-  "requestsFailed": 0,
+  "requestsFinished": 0,
+  "requestsFailed": 1,
   "requestsRetries": 0,
   "requestsFailedPerMinute": 0,
-  "requestsFinishedPerMinute": 11,
-  "requestMinDurationMillis": 4892,
-  "requestMaxDurationMillis": 4892,
-  "requestTotalFailedDurationMillis": 0,
-  "requestTotalFinishedDurationMillis": 4892,
-  "crawlerStartedAt": "2024-06-25T13:07:05.843Z",
-  "crawlerFinishedAt": "2024-06-25T13:07:11.086Z",
-  "statsPersistedAt": "2024-06-25T13:07:11.086Z",
-  "crawlerRuntimeMillis": 5538,
-  "crawlerLastStartTimestamp": 1719320825548,
+  "requestsFinishedPerMinute": 0,
+  "requestMinDurationMillis": null,
+  "requestMaxDurationMillis": 0,
+  "requestTotalFailedDurationMillis": 122056,
+  "requestTotalFinishedDurationMillis": 0,
+  "crawlerStartedAt": "2024-06-25T15:52:11.358Z",
+  "crawlerFinishedAt": "2024-06-25T15:54:13.590Z",
+  "statsPersistedAt": "2024-06-25T15:54:13.590Z",
+  "crawlerRuntimeMillis": 122401,
+  "crawlerLastStartTimestamp": 1719330731189,
   "requestRetryHistogram": [
     1
   ],
   "statsId": 0,
-  "requestAvgFailedDurationMillis": null,
-  "requestAvgFinishedDurationMillis": 4892,
-  "requestTotalDurationMillis": 4892,
+  "requestAvgFailedDurationMillis": 122056,
+  "requestAvgFinishedDurationMillis": null,
+  "requestTotalDurationMillis": 122056,
   "requestsTotal": 1,
   "requestsWithStatusCode": {
     "200": 1
   },
-  "errors": {},
+  "errors": {
+    "/home/adombrowski/.yarn/berry/cache/puppeteer-core-npm-22.11.2-965d0cd1c1-10c0.zip/node_modules/puppeteer-core/src/common/util.ts:320:17": {
+      "missing error code": {
+        "TimeoutError": {
+          "Timed out after waiting 120000ms": {
+            "count": 1
+          }
+        }
+      }
+    }
+  },
   "retryErrors": {}
 }
