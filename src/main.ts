@@ -26,7 +26,7 @@ await Actor.main(async () => {
   // ];
   const input = (await KeyValueStore.getInput()) as Dictionary;
 
-  const { startUrls } = input;
+  const { startUrl } = input;
 
   // Prepare puppeteer plugins
   puppeteerExtra.use(stealthPlugin());
@@ -139,7 +139,7 @@ await Actor.main(async () => {
           }
 
           hdPrice.name = productName ?? NAME_SCRAPE_ERROR;
-          hdPrice.url = startUrls[0].url;
+          hdPrice.url = startUrl;
 
           log.info("scraped data", hdPrice);
         } else {
@@ -171,5 +171,5 @@ await Actor.main(async () => {
   });
 
   // Run the crawler with the start URLs and wait for it to finish.
-  await crawler.run(startUrls);
+  await crawler.run(Array.of(startUrl));
 });

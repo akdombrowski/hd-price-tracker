@@ -1,18 +1,15 @@
 {
-    "title": "PlaywrightCrawler Template",
-    "type": "object",
-    "schemaVersion": 1,
-    "properties": {
-        "startUrls": {
-            "title": "Start URLs",
-            "type": "array",
-            "description": "URLs to start with.",
-            "editor": "requestListSources",
-            "prefill": [
-                {
-                    "url": "https://apify.com"
-                }
-            ]
-        }
+  "title": "HD Price Tracker Input Schema",
+  "description": "This is an input schema",
+  "schemaVersion": 1,
+  "type": "object",
+  "properties": {
+    "startUrl": {
+      "title": "Start URL",
+      "type": "string",
+      "description": "url",
+      "editor": "textfield",
+      "default": "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates/conventional-fixed-rate-mortgages.html"
     }
+  }
 }
