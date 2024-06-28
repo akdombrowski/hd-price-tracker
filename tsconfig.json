@@ -2,15 +2,25 @@
   "extends": "@apify/tsconfig",
   "compilerOptions": {
     "lib": [
+      "ES2015",
+      "ES2016",
+      "ES2017",
       "DOM"
     ],
+    "target": "ES2017",
     "module": "ES2022",
-    "target": "ES2022",
+    "sourceMap": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
     "outDir": "dist",
     "rootDir": ".",
-    "sourceMap": true,
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true
+    "skipLibCheck": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "noImplicitOverride": true
   },
   "include": [
     "./src/**/*"
