@@ -90,11 +90,6 @@ await Actor.main(async () => {
 
     async requestHandler(ctx) {
       const { request, page, log, session, pushData } = ctx;
-      page.setDefaultTimeout(
-        (PAGE_DEFAULT_TIMEOUT_MILLIS &&
-          Number.parseInt(PAGE_DEFAULT_TIMEOUT_MILLIS)) ||
-          60000,
-      );
 
       const title = await page.title();
       const url = request.loadedUrl;
