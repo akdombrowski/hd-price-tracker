@@ -37,6 +37,20 @@ await Actor.main(async () => {
       interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY,
     }),
   );
+
+  // env vars used
+  const {
+    MAX_REQUEST_RETRIES,
+    MAX_REQUESTS_PER_CRAWL,
+    NAVIGATION_TIMEOUT_SECS,
+    REQUEST_HANDLER_TIMEOUT_SECS,
+    USE_SESSION_POOL,
+    MAX_POOL_SIZE,
+    PERSIST_COOKIES_PER_SESSION,
+    MAX_CONCURRENCY,
+    PAGE_DEFAULT_TIMEOUT_MILLIS,
+  } = process.env;
+
   // Create a PuppeteerCrawler
   const crawler = new PuppeteerCrawler({
     // proxyConfiguration,
@@ -48,38 +62,44 @@ await Actor.main(async () => {
         defaultViewport: { width: 1280, height: 720 },
       },
     },
-    maxRequestRetries: Number(process.env.MAX_REQUEST_RETRIES) ?? 0,
-    maxRequestsPerCrawl: Number(process.env.MAX_REQUESTS_PER_CRAWL) ?? 1,
-    navigationTimeoutSecs: Number(process.env.NAVIGATION_TIMEOUT_SECS) ?? 60,
+    maxRequestRetries:
+      (MAX_REQUEST_RETRIES && Number.parseInt(MAX_REQUEST_RETRIES)) || 0,
+    maxRequestsPerCrawl:
+      (MAX_REQUESTS_PER_CRAWL && Number.parseInt(MAX_REQUESTS_PER_CRAWL)) || 1,
+    navigationTimeoutSecs:
+      (NAVIGATION_TIMEOUT_SECS && Number.parseInt(NAVIGATION_TIMEOUT_SECS)) ||
+      60,
     requestHandlerTimeoutSecs:
-      Number(process.env.REQUEST_HANDLER_TIMEOUT_SECS) ?? 60,
+      (REQUEST_HANDLER_TIMEOUT_SECS &&
+        Number.parseInt(REQUEST_HANDLER_TIMEOUT_SECS)) ||
+      60,
     // Activates the Session pool (default is true).
-    useSessionPool:
-      process.env.USE_SESSION_POOL?.toLowerCase() === "false" ? false : true,
+    useSessionPool: USE_SESSION_POOL?.toLowerCase() === "false" ? false : true,
     // Overrides default Session pool configuration
     sessionPoolOptions: {
-      maxPoolSize: Number(process.env.MAX_POOL_SIZE) ?? 10,
+      maxPoolSize: (MAX_POOL_SIZE && Number.parseInt(MAX_POOL_SIZE)) || 10,
     },
     // Set to true if you want the crawler to save cookies per session,
     // and set the cookies to page before navigation automatically (default is true).
     persistCookiesPerSession:
-      process.env.PERSIST_COOKIES_PER_SESSION?.toLowerCase() === "false"
-        ? false
-        : true,
+      PERSIST_COOKIES_PER_SESSION?.toLowerCase() === "false" ? false : true,
     autoscaledPoolOptions: {
-      maxConcurrency: Number(process.env.MAX_CONCURRENCY) ?? 1,
+      maxConcurrency:
+        (MAX_CONCURRENCY && Number.parseInt(MAX_CONCURRENCY)) || 1,
     },
 
     async requestHandler(ctx) {
       const { request, page, log, session, pushData } = ctx;
       page.setDefaultTimeout(
-        Number(process.env.PAGE_DEFAULT_TIMEOUT_MILLIS) ?? 60000,
+        (PAGE_DEFAULT_TIMEOUT_MILLIS &&
+          Number.parseInt(PAGE_DEFAULT_TIMEOUT_MILLIS)) ||
+          60000,
       );
 
       const title = await page.title();
       const url = request.loadedUrl;
 
-      log.info(`crawling ${url}`, { title, url });
+      log.info(`crawling ${url} for price`, { title, url });
       if (session) {
         if (title === "Blocked") {
           session.retire();
@@ -122,7 +142,6 @@ await Actor.main(async () => {
           try {
             const titleDiv = await page.waitForSelector(
               ".product-details__badge-title--wrapper",
-              { timeout: 60000 },
             );
 
             if (titleDiv) {
