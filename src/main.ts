@@ -48,7 +48,6 @@ await Actor.main(async () => {
     MAX_POOL_SIZE,
     PERSIST_COOKIES_PER_SESSION,
     MAX_CONCURRENCY,
-    PAGE_DEFAULT_TIMEOUT_MILLIS,
   } = process.env;
 
   // Create a PuppeteerCrawler
