@@ -2368,7 +2368,7 @@ const RAW_RUNTIME_STATE =
           ["ajv", "npm:8.16.0"],\
           ["apify-client", "npm:2.9.3"],\
           ["archiver-promise", "npm:1.0.0"],\
-          ["axios", "npm:1.7.2"],\
+          ["axios", "npm:1.7.7"],\
           ["chalk", "npm:4.1.2"],\
           ["computer-name", "npm:0.1.0"],\
           ["configparser", "npm:0.3.10"],\
@@ -2407,7 +2407,7 @@ const RAW_RUNTIME_STATE =
           ["@crawlee/types", "npm:3.10.5"],\
           ["agentkeepalive", "npm:4.5.0"],\
           ["async-retry", "npm:1.3.3"],\
-          ["axios", "npm:1.7.2"],\
+          ["axios", "npm:1.7.7"],\
           ["content-type", "npm:1.0.5"],\
           ["ow", "npm:0.28.2"],\
           ["tslib", "npm:2.6.3"],\
@@ -2732,11 +2732,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["axios", [\
-      ["npm:1.7.2", {\
-        "packageLocation": "../../.yarn/berry/cache/axios-npm-1.7.2-c89264f6f7-10c0.zip/node_modules/axios/",\
+      ["npm:1.7.7", {\
+        "packageLocation": "../../.yarn/berry/cache/axios-npm-1.7.7-cfbedc233d-10c0.zip/node_modules/axios/",\
         "packageDependencies": [\
-          ["axios", "npm:1.7.2"],\
-          ["follow-redirects", "virtual:c89264f6f79513b22a07db5e53adf77eba9e48634cf471fb55eb2e75d910809bbac48d9ce7a920c63c8ff2780624fff91866270d8acf614cbd0c4cb748a8b29a#npm:1.15.6"],\
+          ["axios", "npm:1.7.7"],\
+          ["follow-redirects", "virtual:cfbedc233d4c16068d815547ad303dec1092fdb3b8bb4ec9ab9c56bdd55b4e87650c7a525a88805756f4d2819c03abfd96a9983cfa927fedf995d1b8b879db38#npm:1.15.6"],\
           ["form-data", "npm:4.0.0"],\
           ["proxy-from-env", "npm:1.1.0"]\
         ],\
@@ -5488,10 +5488,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:c89264f6f79513b22a07db5e53adf77eba9e48634cf471fb55eb2e75d910809bbac48d9ce7a920c63c8ff2780624fff91866270d8acf614cbd0c4cb748a8b29a#npm:1.15.6", {\
-        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-d6f128c480/3/.yarn/berry/cache/follow-redirects-npm-1.15.6-50635fe51d-10c0.zip/node_modules/follow-redirects/",\
+      ["virtual:cfbedc233d4c16068d815547ad303dec1092fdb3b8bb4ec9ab9c56bdd55b4e87650c7a525a88805756f4d2819c03abfd96a9983cfa927fedf995d1b8b879db38#npm:1.15.6", {\
+        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-ccbb070eb1/3/.yarn/berry/cache/follow-redirects-npm-1.15.6-50635fe51d-10c0.zip/node_modules/follow-redirects/",\
         "packageDependencies": [\
-          ["follow-redirects", "virtual:c89264f6f79513b22a07db5e53adf77eba9e48634cf471fb55eb2e75d910809bbac48d9ce7a920c63c8ff2780624fff91866270d8acf614cbd0c4cb748a8b29a#npm:1.15.6"],\
+          ["follow-redirects", "virtual:cfbedc233d4c16068d815547ad303dec1092fdb3b8bb4ec9ab9c56bdd55b4e87650c7a525a88805756f4d2819c03abfd96a9983cfa927fedf995d1b8b879db38#npm:1.15.6"],\
           ["@types/debug", null],\
           ["debug", null]\
         ],\
