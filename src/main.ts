@@ -207,7 +207,7 @@ await Actor.main(async () => {
           encoding: screenshotEncoding,
           type,
           optimizeForSpeed: true,
-          path: "../notes/screen.txt",
+          clip: {x: 0, y: 180, width: 1280, height: 720 - 180, scale: .25}
         });
 
         hdPrice.screenshot = {
