@@ -20,7 +20,8 @@
     "rootDir": ".",
     "skipLibCheck": true,
     "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "noImplicitAny": false
   },
   "include": [
     "./src/**/*"

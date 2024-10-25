@@ -46,5 +46,5 @@
   },
   "author": "Anthony Dombrowski",
   "license": "MIT",
-  "packageManager": "yarn@4.3.0"
+  "packageManager": "yarn@4.5.1"
 }

@@ -20,6 +20,24 @@ export interface IHDPrice {
 
 const NAME_SCRAPE_ERROR = "NAME_SCRAPE_ERROR";
 
+const scrapeProductName = async (page, log) => {
+  try {
+    const productName = await page.$eval(
+      ".product-details h1",
+      (title) => title.textContent,
+    );
+
+    log.info(`Scraped product name: ${productName}`);
+
+    return productName;
+  } catch (e) {
+    const err = e as Error;
+    log.error(`failed scraping product name due to ${err.name}`, {
+      error: { name: err.name, message: err.message },
+    });
+  }
+};
+
 await Actor.main(async () => {
   // const startUrls = [
   //   "https://www.homedepot.com/p/Husky-56-in-W-x-22-in-D-Heavy-Duty-23-Drawer-Combination-Rolling-Tool-Chest-and-Top-Tool-Cabinet-Set-in-Matte-Black-HOTC5623BB2S/303412321",
@@ -132,23 +150,42 @@ await Actor.main(async () => {
           log.info("scraped price", { price: hdPrice.price });
 
           // Scrape product name
-          let productName;
-          try {
-            const titleDiv = await page.waitForSelector(
-              ".product-details__badge-title--wrapper",
-            );
+          let productName = await scrapeProductName(page, log);
 
-            if (titleDiv) {
-              productName = await titleDiv.$eval(
-                "span > h1",
-                (title) => title.textContent,
+          if (!productName) {
+            // if using product name in url
+            // const re = /\w+:\/\/\w*\.?homedepot\.com\/p\/([^/]*)\/?.*/;
+            // product name from page title
+            const re = RegExp("(?<product>.+)");
+            const match = title.match(re);
+
+            log.debug("regex fallback on page title", {
+              startUrl,
+              title,
+              regexMatch: match,
+            });
+            log.debug("regex match result", { regexMatch: match });
+
+            if (match) {
+              log.debug("regex match 1st capture group result", {
+                captureGroup: match[1],
+              });
+
+              productName = match[1].replace(" - The Home Depot", "");
+              log.debug("final product name result", { productName });
+            }
+
+            if (productName) {
+              log.info(
+                `fall back to product name from page title: ${productName}`,
+                { title, productName },
+              );
+            } else {
+              log.error(
+                "failed to fall back to product name from page title, setting name to NAME_SCRAPE_ERROR",
+                ctx,
               );
             }
-          } catch (e) {
-            const err = e as Error;
-            log.error("failed scraping product name", {
-              error: { name: err.name, message: err.message },
-            });
           }
 
           hdPrice.name = productName ?? NAME_SCRAPE_ERROR;
@@ -156,7 +193,10 @@ await Actor.main(async () => {
 
           log.info("scraped data", hdPrice);
         } else {
-          log.error("data not found", priceComponent);
+          log.error(
+            "failed to scrape price, skipping product name",
+            priceComponent,
+          );
         }
 
         // Take a screenshot for reference
